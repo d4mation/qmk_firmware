@@ -1,9 +1,12 @@
 #include "d4mation.h"
 #include "tap-hold.h"
 #include "zalgo.h"
+#include "mocking-sponge.h"
 #include "macros.h"
 
 bool zalgo_enabled = false;
+bool mocking_sponge_enabled = false;
+bool mocking_sponge_uppercase = false;
 
 bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
@@ -131,6 +134,17 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
     #endif
 
+    case SPONGE: /* Toggles mOcKiNg sPoNgE mode */
+
+      if ( record->event.pressed ) {
+        mocking_sponge_enabled = ! mocking_sponge_enabled;
+        /* Ensure we reset to lowercase */
+        mocking_sponge_uppercase = false;
+      }
+
+      return false;
+      break;
+
     default:
 
       #ifdef UNICODE_ENABLE
@@ -150,6 +164,29 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
         }
 
       #endif
+
+      if ( mocking_sponge_enabled ) {
+
+        if ( keycode < KC_A || keycode > KC_Z ) {
+
+          /* On Spaces, revert to lowercase */
+          if ( keycode == KC_SPACE ) {
+            mocking_sponge_uppercase = false;
+          }
+
+          process_record_keymap( keycode, record );
+          return true;
+
+        }
+
+        if ( record->event.pressed ) {
+          mocking_sponge_text( keycode, mocking_sponge_uppercase );
+          mocking_sponge_uppercase = ! mocking_sponge_uppercase;
+        }
+
+        return false;
+
+      }
 
       break;
   }

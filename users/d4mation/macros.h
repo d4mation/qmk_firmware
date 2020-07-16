@@ -3,6 +3,7 @@
 #include "quantum.h"
 #include "tap-hold.h"
 #include "zalgo.h"
+#include "mocking-sponge.h"
 
 #define SCRGB LCTL( LSFT( LGUI( KC_4 ) ) ) /* Mac Screen Area Grab shortcut (Puts into Clipboard) */
 #define SLEEP LALT( LGUI( KC_SYSTEM_POWER ) ) /* Instant sleep on Mac, rather than having to hold down the button */
@@ -19,5 +20,6 @@ enum custom_keycodes {
   TPUT,
   SHRUG,
   ZALGO,
+  SPONGE,
   NEW_SAFE_RANGE
 };
