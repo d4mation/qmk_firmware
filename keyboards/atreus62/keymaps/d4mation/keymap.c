@@ -121,10 +121,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NUM] = LAYOUT(
     _______, _______, KC_PSLS, KC_PAST, KC_PMNS, _______,                   _______, _______, KC_PSLS, KC_PAST, KC_PMNS, _______,
-    _______, KC_KP_7, KC_KP_8, KC_KP_9, KC_PPLS, _______,                   _______, KC_KP_7, KC_KP_8, KC_KP_9, KC_PPLS, _______,
-    _______, KC_KP_4, KC_KP_5, KC_KP_6, KC_PPLS, _______,                   _______, KC_KP_4, KC_KP_5, KC_KP_6, KC_PPLS, _______,
-    _______, KC_KP_1, KC_KP_2, KC_KP_3, KC_PENT, _______,                   _______, KC_KP_1, KC_KP_2, KC_KP_3, KC_PENT, _______,
-    _______, KC_KP_0, KC_KP_0, KC_PDOT, KC_PENT, _______, _______, _______, _______, KC_KP_0, KC_KP_0, KC_PDOT, KC_PENT, _______
+    _______, KC_7,    KC_8,    KC_9,    KC_PPLS, _______,                   _______, KC_7,    KC_8,    KC_9,    KC_PPLS, _______,
+    _______, KC_4,    KC_5,    KC_6,    KC_PPLS, _______,                   _______, KC_4,    KC_5,    KC_6,    KC_PPLS, _______,
+    _______, KC_1,    KC_2,    KC_3,    KC_PENT, _______,                   _______, KC_1,    KC_2,    KC_3,    KC_PENT, _______,
+    _______, KC_0,    KC_0,    KC_PDOT, KC_PENT, _______, _______, _______, _______, KC_0,    KC_0,    KC_PDOT, KC_PENT, _______
   ),
 
   /* "Adjust" layer, only active if both "Lower" and "Raise" are active at the same time
