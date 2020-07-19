@@ -23,9 +23,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+------+------+------+------+------|                |------+------+------+------+------+------|
    * | Tab  |   '  |   ,  |   .  |   P  |   Y  |                |   F  |   G  |   C  |   R  |   L  |  =   |
    * |------+------+------+------+------+------|                |------+------+------+------+------+------|
-   * | Ctrl |   A  |   O  |   E  |   U  |   I  |,------.,------.|   D  |   H  |   T  |   N  |   S  |  -   |
+   * |Super |   A  |   O  |   E  |   U  |   I  |,------.,------.|   D  |   H  |   T  |   N  |   S  |  -   |
    * |------+------+------+------+------+------||      ||      ||------+------+------+------+------+------|
-   * |Shift |   ;  |   Q  |   J  |   K  |   X  ||Super ||Enter ||   B  |   M  |   W  |   V  |   Z  |  \   |
+   * |Shift |   ;  |   Q  |   J  |   K  |   X  ||CTRL  ||Enter ||   B  |   M  |   W  |   V  |   Z  |  \   |
    * |------+------+------+------+------+------||      ||      ||------+------+------+------+------+------|
    * | NUM  | Alt  | Home |  End |Lower | Bksp |`------'`------'|Space |Raise | Left | Down |  Up  |Right |
    * `-----------------------------------------'                `-----------------------------------------'
@@ -34,9 +34,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_DVR] = LAYOUT(
     _GRAVE_ESC,       KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_SLSH,
     KC_TAB,           KC_QUOT, KC_COMM, KC_DOT,  KC_P,    KC_Y,                      KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_EQL,
-    KC_LCTL,          KC_A,    KC_O,    KC_E,    KC_U,    KC_I,                      KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_MINS,
+    KC_LGUI,          KC_A,    KC_O,    KC_E,    KC_U,    KC_I,                      KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_MINS,
     TD(SHIFT_CAPS),   KC_SCLN, KC_Q,    KC_J,    KC_K,    KC_X,                      KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    KC_BSLS,
-    TG(_NUM),         KC_RALT, KC_HOME, KC_END,  LOWER,   KC_BSPC,  KC_LGUI, KC_ENT, KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT
+    TG(_NUM),         KC_RALT, KC_HOME, KC_END,  LOWER,   KC_BSPC, KC_LCTRL, KC_ENT, KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT
   ),
 
   /* Qwerty layer, more "standard" for other people who may need to use my keyboard or for games where using Qwerty is just easier
@@ -45,9 +45,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+------+------+------+------+------|                |------+------+------+------+------+------|
    * | Tab  |   Q  |   W  |   E  |   R  |   T  |                |   Y  |   U  |   I  |   O  |   P  |  \   |
    * |------+------+------+------+------+------|                |------+------+------+------+------+------|
-   * | Ctrl |   A  |   S  |   D  |   F  |   G  |,------.,------.|   H  |   J  |   K  |   L  |   ;  |  '   |
+   * |Super |   A  |   S  |   D  |   F  |   G  |,------.,------.|   H  |   J  |   K  |   L  |   ;  |  '   |
    * |------+------+------+------+------+------||      ||      ||------+------+------+------+------+------|
-   * |Shift |   Z  |   X  |   C  |   V  |   B  ||Super ||Enter ||   N  |   M  |   ,  |   .  |   /  |  =   |
+   * |Shift |   Z  |   X  |   C  |   V  |   B  ||CTRL  ||Enter ||   N  |   M  |   ,  |   .  |   /  |  =   |
    * |------+------+------+------+------+------||      ||      ||------+------+------+------+------+------|
    * | NUM  | Alt  | Home |  End |Lower | Bksp |`------'`------'|Space |Raise | Left | Down |  Up  |Right |
    * `-----------------------------------------'                `-----------------------------------------'
@@ -56,9 +56,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWR] = LAYOUT(
     _GRAVE_ESC,       KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
     KC_TAB,           KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS,
-    KC_LCTL,          KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
+    KC_LGUI,          KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
     TD(SHIFT_CAPS),   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                      KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_EQL,
-    TG(_NUM),         KC_RALT, KC_HOME, KC_END,  LOWER,   KC_BSPC,  KC_LGUI, KC_ENT, KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT
+    TG(_NUM),         KC_RALT, KC_HOME, KC_END,  LOWER,   KC_BSPC, KC_LCTRL, KC_ENT, KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT
   ),
 
   /* "Lower" layer
@@ -194,3 +194,11 @@ bool process_record_keymap( uint16_t keycode, keyrecord_t *record ) {
   return true;
 
 };
+
+void keyboard_post_init_user(void) {
+  // Customise these values to desired behaviour
+  debug_enable=true;
+  debug_matrix=true;
+  //debug_keyboard=true;
+  //debug_mouse=true;
+}

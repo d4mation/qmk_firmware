@@ -3,19 +3,120 @@
 #include "zalgo.h"
 #include "mocking-sponge.h"
 #include "macros.h"
+#include "print.h"
 
 bool zalgo_enabled = false;
 bool mocking_sponge_enabled = false;
 bool mocking_sponge_uppercase = false;
+bool windows_mode = true;
+
+bool ctrl_pressed = false;
+bool gui_pressed = false;
+bool ctrl_to_alt = false;
+bool gui_to_ctrl = false;
+bool ctrl_and_any_key = false;
+bool gui_and_any_key = false;
 
 bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
   switch ( keycode ) {
 
+    case KC_LCTRL:
+
+      if ( ! windows_mode ) return true;
+
+      ctrl_pressed = record->event.pressed;
+
+      /* On keyup, either restore normal functionality or remove the held key */
+      if ( ! record->event.pressed ) {
+        
+        if ( ctrl_to_alt ) {
+          unregister_code( KC_RALT );
+          ctrl_to_alt = false;
+          return false;
+        }
+        else if ( ctrl_and_any_key ) {
+          unregister_code( KC_LCTRL );
+          ctrl_and_any_key = false;
+          return false;
+        }
+        else if ( ! ctrl_to_alt ) {
+          tap_code( KC_LCTRL );
+          return false;
+        }
+
+      }
+
+      /* Do not output CTRL. This interferes with our remapped command by sending it and CTRL. If CTRL should be output, it will be done via after_windows_mode() */
+      return false;
+      break;
+
+    case KC_LGUI:
+
+      if ( ! windows_mode ) return true;
+
+      gui_pressed = record->event.pressed;
+
+      /* On keyup, either restore normal functionality or remove the held key */
+      if ( ! record->event.pressed ) {
+        
+        if ( gui_to_ctrl ) {
+          unregister_code( KC_RCTRL );
+          gui_to_ctrl = false;
+          return false;
+        }
+        else if ( gui_and_any_key ) {
+          unregister_code( KC_LGUI );
+          gui_and_any_key = false;
+          return false;
+        }
+        else if ( ! gui_to_ctrl ) {
+          tap_code( KC_LGUI );
+          return false;
+        }
+
+      }
+
+      /* Do not output GUI. This interferes with our remapped command by sending it and GUI. If GUI should be output, it will be done via after_windows_mode() */
+      return false;
+      break;
+
+    case KC_TAB:
+
+      if ( ! windows_mode ) return true;
+
+      /* Tab Keydown */
+      if ( record->event.pressed ) {
+
+        if ( ctrl_pressed ) {
+
+          ctrl_to_alt = true;
+
+          /* Hold Alt */
+          register_code( KC_RALT );
+
+        }
+
+        if ( gui_pressed ) {
+
+          gui_to_ctrl = true;
+
+          /* Hold CTRL */
+          register_code( KC_RCTRL );
+
+        }
+
+      }
+
+      return true;
+      break;
+
     case _GRAVE_ESC:
 
       /* Send ` on Tap, Esc on Hold */
       tap_or_hold( record, KC_GRAVE, KC_ESC );
+
+      if ( windows_mode ) after_windows_mode( keycode, record );
 
       return false;
       break;
@@ -189,9 +290,64 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
       }
 
       break;
+
   }
 
+  if ( windows_mode ) after_windows_mode( keycode, record );
+
   process_record_keymap( keycode, record );
+  return true;
+
+};
+
+bool after_windows_mode( uint16_t keycode, keyrecord_t *record ) {
+
+  if ( ctrl_pressed ) {
+
+    if ( keycode == KC_LCTRL ) return false;
+
+    if ( record->event.pressed ) {
+
+      /* Hold CTRL */
+      register_code( KC_LCTRL );
+
+      register_code( keycode );
+
+      /* Let CTRL Keyup know to release it */
+      ctrl_and_any_key = true;
+
+    }
+    else {
+      unregister_code( keycode );
+    }
+
+    return true;
+
+  }
+
+  if ( gui_pressed ) {
+
+    if ( keycode == KC_LGUI ) return false;
+
+    if ( record->event.pressed ) {
+
+      /* Hold GUI */
+      register_code( KC_LGUI );
+
+      register_code( keycode );
+
+      /* Let GUI Keyup know to release it */
+      gui_and_any_key = true;
+
+    }
+    else {
+      unregister_code( keycode );
+    }
+
+    return true;
+
+  }
+
   return true;
 
 };
