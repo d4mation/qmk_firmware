@@ -14,8 +14,12 @@ extern bool windows_mode;
 
 bool ctrl_pressed = false;
 bool gui_pressed = false;
+bool shift_pressed = false;
+
 bool ctrl_to_alt = false;
 bool gui_to_ctrl = false;
+bool ctrl_f5 = false;
+
 bool ctrl_and_any_key = false;
 bool gui_and_any_key = false;
 
@@ -82,6 +86,17 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
       return true;
       break;
 
+    case TD(SHIFT_CAPS):
+    case KC_LSHIFT:
+
+      if ( ! windows_cmd_overlay ) return true;
+
+      shift_pressed = record->event.pressed;
+
+      // We do output Shift each time
+      return true;
+      break;
+
     case KC_LCTRL:
 
       if ( ! windows_cmd_overlay ) return true;
@@ -94,6 +109,11 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
         if ( ctrl_to_alt ) {
           unregister_code( KC_RALT );
           ctrl_to_alt = false;
+          return false;
+        }
+        else if ( ctrl_f5 ) {
+          tap_code16( C( KC_F5 ) );
+          ctrl_f5 = false;
           return false;
         }
         else if ( ctrl_and_any_key ) {
@@ -164,6 +184,25 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
           /* Hold CTRL */
           register_code( KC_RCTRL );
+
+        }
+
+      }
+
+      return true;
+      break;
+
+    case KC_R:
+
+      if ( ! windows_cmd_overlay ) return true;
+
+      if ( record->event.pressed ) {
+
+        if ( ctrl_pressed && shift_pressed ) {
+
+          ctrl_f5 = true;
+          unregister_code( KC_LSHIFT );
+          return false;
 
         }
 
