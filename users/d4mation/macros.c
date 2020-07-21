@@ -8,7 +8,8 @@
 bool zalgo_enabled = false;
 bool mocking_sponge_enabled = false;
 bool mocking_sponge_uppercase = false;
-bool windows_mode = true;
+
+extern bool windows_mode;
 
 bool ctrl_pressed = false;
 bool gui_pressed = false;
@@ -20,6 +21,43 @@ bool gui_and_any_key = false;
 bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
   switch ( keycode ) {
+
+    case CG_SWAP:
+
+      if ( ! CMD_WINDOWS_ENABLE ) return true;
+
+      if ( record->event.pressed ) {
+
+        /** This helps ensure that the saved state of the keyboard is taken into account */
+        if ( CMD_WINDOWS_DEFAULT_CTRL ) {
+          windows_mode = false;
+        }
+        else {
+          windows_mode = true;
+        }
+
+      }
+
+      return true;
+      break;
+
+    case CG_NORM:
+
+      if ( ! CMD_WINDOWS_ENABLE ) return true;
+
+      if ( record->event.pressed ) {
+
+        if ( CMD_WINDOWS_DEFAULT_CTRL ) {
+          windows_mode = true;
+        }
+        else {
+          windows_mode = false;
+        }
+
+      }
+
+      return true;
+      break;
 
     case KC_LCTRL:
 

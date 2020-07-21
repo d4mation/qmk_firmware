@@ -29,7 +29,18 @@ void matrix_scan_user( void ) {
     matrix_scan_keymap();
 }
 
+extern keymap_config_t keymap_config;
+bool windows_mode = false;
+
 void eeconfig_init_user( void ) {
+
+    /* Initialize on boot so that we have the ability to know what the saved Swap CTRL/GUI state is */
+    if ( CMD_WINDOWS_ENABLE && CMD_WINDOWS_DEFAULT_CTRL && ! keymap_config.swap_lctl_lgui ) {
+        windows_mode = true;
+    }
+    else {
+        windows_mode = false;
+    }
 
     eeconfig_init_keymap();
     keyboard_init();
