@@ -37,6 +37,15 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
           windows_mode = true;
         }
 
+        #ifdef UNICODE_ENABLE
+          if ( WINDOWS_LAYOUT_IS_DEFAULT ) {
+              set_unicode_input_mode( UC_OSX );
+          }
+          else {
+              set_unicode_input_mode( UC_WINC );
+          }
+        #endif
+
       }
 
       if ( ! CMD_WINDOWS_ENABLE ) return true;
@@ -66,6 +75,15 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
         else {
           windows_mode = false;
         }
+
+        #ifdef UNICODE_ENABLE
+          if ( WINDOWS_LAYOUT_IS_DEFAULT ) {
+              set_unicode_input_mode( UC_WINC );
+          }
+          else {
+              set_unicode_input_mode( UC_OSX );
+          }
+        #endif
 
       }
 

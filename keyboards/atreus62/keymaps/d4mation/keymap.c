@@ -152,11 +152,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-/* Runs just one time when the keyboard initializes. */
-void eeconfig_init_keymap( void ) {
-  set_unicode_input_mode( UC_OSX );
-};
-
 bool process_record_keymap( uint16_t keycode, keyrecord_t *record ) {
 
   switch ( keycode ) {
@@ -194,11 +189,3 @@ bool process_record_keymap( uint16_t keycode, keyrecord_t *record ) {
   return true;
 
 };
-
-void keyboard_post_init_user(void) {
-  // Customise these values to desired behaviour
-  debug_enable=true;
-  debug_matrix=true;
-  //debug_keyboard=true;
-  //debug_mouse=true;
-}

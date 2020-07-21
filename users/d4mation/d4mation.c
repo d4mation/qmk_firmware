@@ -32,10 +32,10 @@ void matrix_scan_user( void ) {
 extern keymap_config_t keymap_config;
 
 /* Whether to remap specific modifiers based on context */
-bool windows_cmd_overlay;
+bool windows_cmd_overlay = false;
 
 /* Whether we should be sending Windows-based Macros */
-bool windows_mode;
+bool windows_mode = false;
 
 void eeconfig_init_user( void ) {
 
@@ -47,9 +47,20 @@ void eeconfig_init_user( void ) {
         windows_cmd_overlay = false;
     }
 
+    /* Set Windows Mode for the couple Macros that are not tied to CTRL/GUI/Shift states */
     if ( WINDOWS_LAYOUT_IS_DEFAULT && ! keymap_config.swap_lctl_lgui ) {
         windows_mode = true;
     }
+
+    /* Set the Unicode Input mode */
+    #ifdef UNICODE_ENABLE
+        if ( windows_mode ) {
+            set_unicode_input_mode( UC_WINC );
+        }
+        else {
+            set_unicode_input_mode( UC_OSX );
+        }
+    #endif
 
     eeconfig_init_keymap();
     keyboard_init();
