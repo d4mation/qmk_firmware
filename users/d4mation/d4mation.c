@@ -30,16 +30,16 @@ void matrix_scan_user( void ) {
 }
 
 extern keymap_config_t keymap_config;
-bool windows_mode = false;
+bool windows_cmd_overlay = false;
 
 void eeconfig_init_user( void ) {
 
     /* Initialize on boot so that we have the ability to know what the saved Swap CTRL/GUI state is */
     if ( CMD_WINDOWS_ENABLE && CMD_WINDOWS_DEFAULT_CTRL && ! keymap_config.swap_lctl_lgui ) {
-        windows_mode = true;
+        windows_cmd_overlay = true;
     }
     else {
-        windows_mode = false;
+        windows_cmd_overlay = false;
     }
 
     eeconfig_init_keymap();

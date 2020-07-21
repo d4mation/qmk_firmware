@@ -25,4 +25,4 @@ enum custom_keycodes {
   NEW_SAFE_RANGE
 };
 
-bool after_windows_mode( uint16_t keycode, keyrecord_t *record );
+bool after_windows_cmd_overlay( uint16_t keycode, keyrecord_t *record );

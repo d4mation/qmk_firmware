@@ -9,7 +9,7 @@ bool zalgo_enabled = false;
 bool mocking_sponge_enabled = false;
 bool mocking_sponge_uppercase = false;
 
-extern bool windows_mode;
+extern bool windows_cmd_overlay;
 
 bool ctrl_pressed = false;
 bool gui_pressed = false;
@@ -30,10 +30,10 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
         /** This helps ensure that the saved state of the keyboard is taken into account */
         if ( CMD_WINDOWS_DEFAULT_CTRL ) {
-          windows_mode = false;
+          windows_cmd_overlay = false;
         }
         else {
-          windows_mode = true;
+          windows_cmd_overlay = true;
         }
 
       }
@@ -48,10 +48,10 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
       if ( record->event.pressed ) {
 
         if ( CMD_WINDOWS_DEFAULT_CTRL ) {
-          windows_mode = true;
+          windows_cmd_overlay = true;
         }
         else {
-          windows_mode = false;
+          windows_cmd_overlay = false;
         }
 
       }
@@ -61,7 +61,7 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
     case KC_LCTRL:
 
-      if ( ! windows_mode ) return true;
+      if ( ! windows_cmd_overlay ) return true;
 
       ctrl_pressed = record->event.pressed;
 
@@ -85,13 +85,13 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
       }
 
-      /* Do not output CTRL. This interferes with our remapped command by sending it and CTRL. If CTRL should be output, it will be done via after_windows_mode() */
+      /* Do not output CTRL. This interferes with our remapped command by sending it and CTRL. If CTRL should be output, it will be done via after_windows_cmd_overlay() */
       return false;
       break;
 
     case KC_LGUI:
 
-      if ( ! windows_mode ) return true;
+      if ( ! windows_cmd_overlay ) return true;
 
       gui_pressed = record->event.pressed;
 
@@ -115,13 +115,13 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
       }
 
-      /* Do not output GUI. This interferes with our remapped command by sending it and GUI. If GUI should be output, it will be done via after_windows_mode() */
+      /* Do not output GUI. This interferes with our remapped command by sending it and GUI. If GUI should be output, it will be done via after_windows_cmd_overlay() */
       return false;
       break;
 
     case KC_TAB:
 
-      if ( ! windows_mode ) return true;
+      if ( ! windows_cmd_overlay ) return true;
 
       /* Tab Keydown */
       if ( record->event.pressed ) {
@@ -154,7 +154,7 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
       /* Send ` on Tap, Esc on Hold */
       tap_or_hold( record, KC_GRAVE, KC_ESC );
 
-      if ( windows_mode ) after_windows_mode( keycode, record );
+      if ( windows_cmd_overlay ) after_windows_cmd_overlay( keycode, record );
 
       return false;
       break;
@@ -331,14 +331,14 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
   }
 
-  if ( windows_mode ) after_windows_mode( keycode, record );
+  if ( windows_cmd_overlay ) after_windows_cmd_overlay( keycode, record );
 
   process_record_keymap( keycode, record );
   return true;
 
 };
 
-bool after_windows_mode( uint16_t keycode, keyrecord_t *record ) {
+bool after_windows_cmd_overlay( uint16_t keycode, keyrecord_t *record ) {
 
   if ( ctrl_pressed ) {
 
