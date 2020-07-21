@@ -3,7 +3,6 @@
 #include "zalgo.h"
 #include "mocking-sponge.h"
 #include "macros.h"
-#include "print.h"
 
 bool zalgo_enabled = false;
 bool mocking_sponge_enabled = false;
