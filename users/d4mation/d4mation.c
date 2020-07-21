@@ -30,7 +30,12 @@ void matrix_scan_user( void ) {
 }
 
 extern keymap_config_t keymap_config;
-bool windows_cmd_overlay = false;
+
+/* Whether to remap specific modifiers based on context */
+bool windows_cmd_overlay;
+
+/* Whether we should be sending Windows-based Macros */
+bool windows_mode;
 
 void eeconfig_init_user( void ) {
 
@@ -40,6 +45,10 @@ void eeconfig_init_user( void ) {
     }
     else {
         windows_cmd_overlay = false;
+    }
+
+    if ( WINDOWS_LAYOUT_IS_DEFAULT && ! keymap_config.swap_lctl_lgui ) {
+        windows_mode = true;
     }
 
     eeconfig_init_keymap();

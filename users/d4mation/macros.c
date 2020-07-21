@@ -10,6 +10,7 @@ bool mocking_sponge_enabled = false;
 bool mocking_sponge_uppercase = false;
 
 extern bool windows_cmd_overlay;
+extern bool windows_mode;
 
 bool ctrl_pressed = false;
 bool gui_pressed = false;
@@ -23,6 +24,17 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
   switch ( keycode ) {
 
     case CG_SWAP:
+
+      if ( record->event.pressed ) {
+
+        if ( WINDOWS_LAYOUT_IS_DEFAULT ) {
+          windows_mode = false;
+        }
+        else {
+          windows_mode = true;
+        }
+
+      }
 
       if ( ! CMD_WINDOWS_ENABLE ) return true;
 
@@ -42,6 +54,17 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
       break;
 
     case CG_NORM:
+
+      if ( record->event.pressed ) {
+
+        if ( WINDOWS_LAYOUT_IS_DEFAULT ) {
+          windows_mode = true;
+        }
+        else {
+          windows_mode = false;
+        }
+
+      }
 
       if ( ! CMD_WINDOWS_ENABLE ) return true;
 
@@ -148,6 +171,28 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
       return true;
       break;
+
+    case SLEEP:
+
+      if ( windows_mode ) {
+        tap_code16( G( KC_L ) );
+      }
+      else {
+        tap_code16( LALT( LGUI( KC_SYSTEM_POWER ) ) ); /* Instant sleep on Mac, rather than having to hold down the button */
+      }
+
+      return false;
+
+    case SCGRB: 
+
+      if ( windows_mode ) {
+        tap_code16( G( S( KC_S ) ) ); /* New Windows 10 screen grab tool */
+      }
+      else {
+        tap_code16( LCTL( LSFT( LGUI( KC_4 ) ) ) ); /* Mac Screen Area Grab shortcut (Puts into Clipboard) */
+      }
+
+      return false;
 
     case _GRAVE_ESC:
 
