@@ -223,6 +223,14 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
         }
 
+        if ( gui_pressed || ctrl_pressed ) {
+
+          /* Ensures WIN+R works. */
+          after_windows_cmd_overlay( keycode, record );
+          return false;
+
+        }
+
       }
 
       return true;
