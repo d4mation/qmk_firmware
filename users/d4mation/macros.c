@@ -230,22 +230,38 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
     case SLEEP:
 
-      if ( windows_mode ) {
-        tap_code16( G( KC_L ) );
+      if ( record->event.pressed ) {
+
+        if ( windows_mode ) {
+          tap_code16( G( KC_L ) );
+        }
+        else {
+          register_code( KC_SYSTEM_POWER ); /* Hold for one second */
+        }
+
       }
       else {
-        tap_code16( LALT( LGUI( KC_SYSTEM_POWER ) ) ); /* Instant sleep on Mac, rather than having to hold down the button */
+
+        if ( ! windows_mode ) {
+          _delay_ms( 1000 );
+          unregister_code( KC_SYSTEM_POWER );
+        }
+
       }
 
       return false;
 
     case SCGRB: 
 
-      if ( windows_mode ) {
-        tap_code16( G( S( KC_S ) ) ); /* New Windows 10 screen grab tool */
-      }
-      else {
-        tap_code16( LCTL( LSFT( LGUI( KC_4 ) ) ) ); /* Mac Screen Area Grab shortcut (Puts into Clipboard) */
+      if ( record->event.pressed ) {
+
+        if ( windows_mode ) {
+          tap_code16( G( S( KC_S ) ) ); /* New Windows 10 screen grab tool */
+        }
+        else {
+          tap_code16( LCTL( LSFT( LGUI( KC_4 ) ) ) ); /* Mac Screen Area Grab shortcut (Puts into Clipboard) */
+        }
+
       }
 
       return false;
