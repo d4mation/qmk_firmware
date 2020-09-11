@@ -19,9 +19,6 @@ bool ctrl_to_alt = false;
 bool gui_to_ctrl = false;
 bool ctrl_f5 = false;
 
-bool ctrl_and_any_key = false;
-bool gui_and_any_key = false;
-
 bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
   switch ( keycode ) {
@@ -122,31 +119,22 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
       /* On keyup, either restore normal functionality or remove the held key */
       if ( ! record->event.pressed ) {
-        
+
         if ( ctrl_to_alt ) {
           unregister_code( KC_RALT );
           ctrl_to_alt = false;
-          return false;
+          return true;
         }
         else if ( ctrl_f5 ) {
           tap_code16( C( KC_F5 ) );
           ctrl_f5 = false;
-          return false;
-        }
-        else if ( ctrl_and_any_key ) {
-          unregister_code( KC_LCTRL );
-          ctrl_and_any_key = false;
-          return false;
-        }
-        else if ( ! ctrl_to_alt ) {
-          tap_code( KC_LCTRL );
-          return false;
+          return true;
         }
 
       }
 
-      /* Do not output CTRL. This interferes with our remapped command by sending it and CTRL. If CTRL should be output, it will be done via after_windows_cmd_overlay() */
-      return false;
+      /* Output Control normally in all other instances. Otherwise basic use cases like CTRL+Click do not work */
+      return true;
       break;
 
     case KC_LGUI:
@@ -157,26 +145,16 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
       /* On keyup, either restore normal functionality or remove the held key */
       if ( ! record->event.pressed ) {
-        
+
         if ( gui_to_ctrl ) {
-          unregister_code( KC_RCTRL );
+          unregister_code( KC_LCTRL );
           gui_to_ctrl = false;
-          return false;
-        }
-        else if ( gui_and_any_key ) {
-          unregister_code( KC_LGUI );
-          gui_and_any_key = false;
-          return false;
-        }
-        else if ( ! gui_to_ctrl ) {
-          tap_code( KC_LGUI );
-          return false;
+          return true;
         }
 
       }
 
-      /* Do not output GUI. This interferes with our remapped command by sending it and GUI. If GUI should be output, it will be done via after_windows_cmd_overlay() */
-      return false;
+      return true;
       break;
 
     case KC_TAB:
@@ -193,6 +171,9 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
           /* Hold Alt */
           register_code( KC_RALT );
 
+          /* Stop holding CTRL */
+          unregister_code( KC_LCTRL );
+
         }
 
         if ( gui_pressed ) {
@@ -200,7 +181,10 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
           gui_to_ctrl = true;
 
           /* Hold CTRL */
-          register_code( KC_RCTRL );
+          register_code( KC_LCTRL );
+
+          /* Stop holding GUI */
+          unregister_code( KC_LGUI );
 
         }
 
@@ -219,14 +203,7 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
           ctrl_f5 = true;
           unregister_code( KC_LSHIFT );
-          return false;
-
-        }
-
-        if ( gui_pressed || ctrl_pressed ) {
-
-          /* Ensures WIN+R works. */
-          after_windows_cmd_overlay( keycode, record );
+          unregister_code16( TD(SHIFT_CAPS) );
           return false;
 
         }
@@ -259,7 +236,7 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
       return false;
 
-    case SCGRB: 
+    case SCGRB:
 
       if ( record->event.pressed ) {
 
@@ -278,8 +255,6 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
       /* Send ` on Tap, Esc on Hold */
       tap_or_hold( record, KC_GRAVE, KC_ESC );
-
-      if ( windows_cmd_overlay ) after_windows_cmd_overlay( keycode, record );
 
       return false;
       break;
@@ -456,61 +431,7 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
 
   }
 
-  if ( windows_cmd_overlay ) after_windows_cmd_overlay( keycode, record );
-
   process_record_keymap( keycode, record );
-  return true;
-
-};
-
-bool after_windows_cmd_overlay( uint16_t keycode, keyrecord_t *record ) {
-
-  if ( ctrl_pressed ) {
-
-    if ( keycode == KC_LCTRL ) return false;
-
-    if ( record->event.pressed ) {
-
-      /* Hold CTRL */
-      register_code( KC_LCTRL );
-
-      register_code( keycode );
-
-      /* Let CTRL Keyup know to release it */
-      ctrl_and_any_key = true;
-
-    }
-    else {
-      unregister_code( keycode );
-    }
-
-    return true;
-
-  }
-
-  if ( gui_pressed ) {
-
-    if ( keycode == KC_LGUI ) return false;
-
-    if ( record->event.pressed ) {
-
-      /* Hold GUI */
-      register_code( KC_LGUI );
-
-      register_code( keycode );
-
-      /* Let GUI Keyup know to release it */
-      gui_and_any_key = true;
-
-    }
-    else {
-      unregister_code( keycode );
-    }
-
-    return true;
-
-  }
-
   return true;
 
 };
