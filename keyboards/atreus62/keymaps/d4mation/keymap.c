@@ -100,7 +100,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_RAISE] = LAYOUT(
     KC_F11,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                     KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F12,
     _______, _______, PHPOPEN, PHPCLSE, _______, _______,                   ZALGO,   SPONGE,  _______, _______, _______, _______,
-    _______, SHRUG,   LENNY,   MAGIC,   DISFACE, _______,                   _______, _______, _______, KC_LBRC, KC_RBRC,_______,
+    _______, SHRUG,   LENNY,   MAGIC,   DISFACE, _______,                   _______, KC_F13,  KC_F14,  KC_LBRC, KC_RBRC,_______,
     _______, AMENO,   TFLIP,   TPUT,    _______, _______,                   _______, KC_MPRV, KC_MPLY, KC_MNXT, _______, _______,
     _______, _______, KC_PGUP, KC_PGDN, _______, KC_DEL,  _______, _______, KC_INS,  _______, _______, _______, _______, _______
   ),
@@ -179,6 +179,25 @@ bool process_record_keymap( uint16_t keycode, keyrecord_t *record ) {
       else {
         layer_off( _RAISE );
         update_tri_layer( _LOWER, _RAISE, _ADJUST );
+      }
+
+      return false;
+      break;
+
+    // Toggl desktop doesn't recognize keys over F12 and I don't want to deal with something like Autohotkey
+    case KC_F13 : 
+
+      if ( record->event.pressed ) {
+        tap_code16( LCTL( KC_KP_ASTERISK ) );
+      }
+
+      return false;
+      break;
+
+    case KC_F14 : 
+
+      if ( record->event.pressed ) {
+        tap_code16( LCTL( KC_KP_DOT ) );
       }
 
       return false;
