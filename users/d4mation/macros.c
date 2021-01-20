@@ -121,7 +121,7 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
       if ( ! record->event.pressed ) {
 
         if ( ctrl_to_alt ) {
-          unregister_code( KC_RALT );
+          unregister_code( KC_LALT );
           ctrl_to_alt = false;
           return true;
         }
@@ -169,7 +169,7 @@ bool process_record_user( uint16_t keycode, keyrecord_t *record ) {
           ctrl_to_alt = true;
 
           /* Hold Alt */
-          register_code( KC_RALT );
+          register_code( KC_LALT );
 
           /* Stop holding CTRL */
           unregister_code( KC_LCTRL );
