@@ -27,3 +27,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [6] = LAYOUT( _______, _______, _______, _______, _______ ),
     [7] = LAYOUT( _______, _______, _______, _______, _______ )
 };
+
+extern bool is_drag_scroll;
+
+void process_mouse_user(report_mouse_t* mouse_report, int16_t x, int16_t y) {
+
+    mouse_report->x = x;
+    mouse_report->y = y;
+
+    if ( is_drag_scroll ) {
+
+        // pointing_device_task() in trackball.c will take these and set them correctly
+        mouse_report->y = - y;
+
+    }
+
+}
