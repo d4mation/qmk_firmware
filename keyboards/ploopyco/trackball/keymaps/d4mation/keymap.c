@@ -33,7 +33,7 @@ void process_wheel_user(report_mouse_t* mouse_report, int16_t h, int16_t v) {
     uint16_t p1 = adc_read(OPT_ENC1_MUX);
     uint16_t p2 = adc_read(OPT_ENC2_MUX);
 
-    uint8_t dir = opt_encoder_handler(p1, p2);
+    int dir = opt_encoder_handler(p1, p2);
 
     int8_t scalar_factor = round((float) dir * PLOOPY_SCROLLWHEEL_MULTIPLIER);
 
